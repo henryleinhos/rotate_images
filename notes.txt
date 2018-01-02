@@ -1,0 +1,59 @@
+Dec 31, 2017
+------------
+
+Need a ros node to rotate images from a stereo rig so that I can calibrate them using the standard stereo calibration nodes provided by ROS.
+
+Can start with the ps3eye cameras setup with the left camera rotated 90 deg and the right camera rotated -90 degrees. 
+
+
+1. start the ROS master node in one window:
+
+  $ roscore
+$ roscore 
+ ... logging to /home/henry/.ros/log/ffc4d770-ee7f-11e7-a46c-2c337a47917d/roslaunch-henry-Inspiron-5749-17527.log
+ Checking log directory for disk usage. This may take awhile.
+ Press Ctrl-C to interrupt
+ Done checking log file disk usage. Usage is <1GB.
+
+ started roslaunch server http://henry-Inspiron-5749:42429/
+ ros_comm version 1.11.21
+
+
+ SUMMARY
+ ========
+
+ PARAMETERS
+  * /rosdistro: indigo
+  * /rosversion: 1.11.21
+
+ NODES
+
+ auto-starting new master
+ process[master]: started with pid [17541]
+ ROS_MASTER_URI=http://henry-Inspiron-5749:11311/
+
+ setting /run_id to ffc4d770-ee7f-11e7-a46c-2c337a47917d
+ process[rosout-1]: started with pid [17554]
+ started core service [/rosout]
+
+
+2. Use the NASA Challenge nodes to start the two cameras :
+
+https://bitbucket.org/leinhos/nasa_challenge/wiki/Stereo%20Camera
+
+  $ roslaunch ps3eye ps3eye_start.launch
+
+
+3. start rqt to look at the published video stream
+
+  $ rqt
+
+4. start the rotate_images node:
+
+  $ rosrun rotate_images rotate_images.py _image_topic:="/ps3eye/left/image_raw" _image_angle:=90.0
+  $ rosrun rotate_images rotate_images.py _image_topic:="/ps3eye/right/image_raw" _image_angle:=-90.0
+
+
+4. run the stereo calibration node:
+
+$ rosrun camera_calibration cameracalibrator.py --size 8x6 --square 0.108 right:=/ps3eye/right/ige_raw/rotated left:=/ps3eye/left/image_raw/rotated right_camera:=/ps3eye/right left_camera:=/ps3eye/left

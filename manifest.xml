@@ -1,0 +1,18 @@
+<package>
+  <description brief="rotate_images">
+
+     rotate_images - node that subscribes to image topics and publishes a rotate version
+
+  </description>
+  <author>Henry Leinhos</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/rotate_images</url>
+  <depend package="sensor_msgs"/>
+  <depend package="cv_bridge"/>
+  <depend package="rospy"/>
+  <depend package="std_msgs"/>
+
+</package>
+
+
